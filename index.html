@@ -74,14 +74,40 @@
             // secret word arrays
             var sportsArray = ["baseball","soccer","tennis","football","ice hockey","surfing","cricket","track","cross country","lacrosse"];
             var presidentsArray = ["obama","lincoln","roosevelt","kennedy","washington","jefferson","truman","monroe","jackson"];
-            var natureFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","cyclone","blizzard","sink hole","forest fire"];
             var jazzGreatsArray = ["duke ellington","john coltrane","charlie parker","thelonius monk","dave brubeck","bill evans","oscar peterson","louis armstrong","art tatum"];
+            var naturesFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","cyclone","blizzard","sink hole","forest fire"];
             var chooseCategoryArray = ["choose a category"];
+            var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
 
-            // initialize the right/wrong arrays, secret word, and guess/wrong strings
-            var rightArray = ["_","_","_","_","_"]; // make function to build the array - associate with pulldown choice
+            // make function to build the array - associate with category pulldown selection
+            function makeSecretWord (catArray,index) {
+                var secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
+                return secretIndex;
+            }
+
+            // test
+            userSelection = "3"; // get pulldown selection
+            secretWord = makeSecretWord (categoryArray,3);
+            console.log("Secret word = " + secretWord);
+
+            // function to build the wordArray and rightArray to display the characters on the page
+            function makeSecretArray (thisArray,pageArray,myWord) {
+                for ( i = 0 ; i < myWord.length ; i++ ) {
+                    thisArray.push(myWord.charAt(i));
+                    pageArray.push("_");
+                }
+                return pageArray;
+                }
+
+            // test
+            var rightArray = [];
+            var wordArray = [];
+            makeSecretArray(wordArray,rightArray,secretWord);
+            console.log("rightArray = " + rightArray) ;
+
+            // initialize wrongArray, secret and guess string variables
             var wrongArray = [];
-            var secret = "apple"; // use random choice method
+            var secret = secretWord; // use random choice method
             var guess = "";
 
             // assign Element ID to a variable
