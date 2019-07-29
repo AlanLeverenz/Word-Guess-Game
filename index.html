@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Word Guess Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+    .text-center {
+        text-align: center;
+    }
+    
+    </style>
+
+</head>
+<body>
+    
+<!-- Header -->
+<div class="container">
+        <h2 class="text-center">Word Guess Game</h2>
+    
+        <!-- Instructions -->
+        <p class="text-center">Select a category and type in a word. Good luck!</p>
+    
+        <!-- Category pull-down -->
+        <div class="container">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Choose a Category
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <button class="dropdown-item" type="button">Sports</button>
+                    <button class="dropdown-item" type="button">Presidents</button>
+                    <button class="dropdown-item" type="button">Nature's Fury</button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Select random category word -->
+    
+        <!-- Update the div image, set opacity to 0 -->
+    
+        <!-- User input -->
+    
+        <!-- Word characters display -->
+
+        <div class="container" style="padding-top:40px;">
+            <div class="secret-word-box">
+                <p Id="rightText"></p>
+            </div>
+
+            <div class="wrong-chars-box">
+                <p Id="wrongText"></p>
+            </div>
+        </div>
+
+        <!-- User Scoreboard and Guessed Letters -->
+    
+        <!-- Word image -->
+    
+    </div>
+    
+
+<!-- JavaScript -->
+
+    <script type="text/javascript">
+
+        // there will be ways to start the program:
+        // 1. load or reload the URL
+        // 2. select a category using the pulldown
+
+            // initialize the right/wrong arrays, secret word, and guess/wrong strings
+            var rightArray = ["_","_","_","_","_"];
+            var wrongArray = [];
+            var secret = "apple";
+            var guess = "";
+
+            // assign Element ID to a variable
+            var userChoiceText = document.getElementById("userchoice-text");
+
+            // Function to run whenever user presses a key
+            document.onkeyup = function(event) {
+                // assign the key pressed and gotit to a variable
+                var guess = event.key;
+                var gotit = 0;
+
+                // see IF it matches characters in the secret word
+                //  if so, replace that item in the hangman array
+                for ( i = 0 ; i < secret.length ; i++ ) {
+                    if (secret.charAt(i) === guess ) {
+                        rightArray[i] = guess; 
+                        // console.log(i + ": R - " + guess);
+                        gotit++;
+                    } 
+                }
+                // if the character was not in the secret word and not in the wrongArray, then add it
+                gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
+                // if (gotit < 1 && wrongArray.indexOf(guess) == -1) {
+                //     // set the indexnum for the console.log
+                    // var indexnum = wrongArray.indexOf(guess);
+                    // console.log(i + ": W - " + indexnum);
+                //     //  if indexnum is -1 is ok to add (ternary)
+                //     indexnum < 0 ? wrongArray.push(guess) : null ;
+                // }
+
+                // join the arrays to prepare for the document
+                var rightString = rightArray.join(" ");
+                var wrongString = wrongArray.join(" ");
+                console.log("R - " + rightString);
+                console.log("W - " + wrongString);
+
+                // document.getElementById("demo").innerHTML = hangman.join(" ");
+                rightText.textContent = "Your secret word: " + rightString;
+                wrongText.textContent = "Your wrong guesses: " + wrongString;
+
+            } // end of onkeyup function
+
+
+        // function to capture the pulldown item selected
+        // $(".dropdown").on("show.bs.dropdown", function(event){
+        //     var x = $(event.relatedTarget).text(); // Get the text of the element
+        //     alert(x);
+        //     });
+
+        // function inArray(needle,haystack) {
+        // for (var j=0 ; i < haystack.length ; j++ ) {
+        //     if ( haystack[j] === needle ) {
+        //         return true; 
+        //         }
+        //     }
+        //     return false;
+    </script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
