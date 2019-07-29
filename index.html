@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <style>
-    .text-center {
+    .text-center p {
         text-align: center;
     }
     
@@ -22,7 +22,8 @@
         <h2 class="text-center">Word Guess Game</h2>
     
         <!-- Instructions -->
-        <p class="text-center">Select a category and type in a word. Good luck!</p>
+        <p class="text-center">Select a category and type to discover the secret word.</p>
+        <p class="text-center">Good luck!</p>
     
         <!-- Category pull-down -->
         <div class="container">
@@ -33,17 +34,15 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     <button class="dropdown-item" type="button">Sports</button>
                     <button class="dropdown-item" type="button">Presidents</button>
+                    <button class="dropdown-item" type="button">Jazz Greats</button>
                     <button class="dropdown-item" type="button">Nature's Fury</button>
                 </div>
             </div>
         </div>
     
         <!-- Select random category word -->
-    
-        <!-- Update the div image, set opacity to 0 -->
-    
+        <!-- Update the div image, set opacity to 0 -->  
         <!-- User input -->
-    
         <!-- Word characters display -->
 
         <div class="container" style="padding-top:40px;">
@@ -57,7 +56,6 @@
         </div>
 
         <!-- User Scoreboard and Guessed Letters -->
-    
         <!-- Word image -->
     
     </div>
@@ -67,14 +65,23 @@
 
     <script type="text/javascript">
 
-        // there will be ways to start the program:
+        // Ways to start/pause the program:
         // 1. load or reload the URL
-        // 2. select a category using the pulldown
+        // 2. select a category using the pulldown to create a new secret word
+        // 3. When the secret word is filled out, raise a congratulatory alert message/sound
+ 
+
+            // secret word arrays
+            var sportsArray = ["baseball","soccer","tennis","football","ice hockey","surfing","cricket","track","cross country","lacrosse"];
+            var presidentsArray = ["obama","lincoln","roosevelt","kennedy","washington","jefferson","truman","monroe","jackson"];
+            var natureFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","cyclone","blizzard","sink hole","forest fire"];
+            var jazzGreatsArray = ["duke ellington","john coltrane","charlie parker","thelonius monk","dave brubeck","bill evans","oscar peterson","louis armstrong","art tatum"];
+            var chooseCategoryArray = ["choose a category"];
 
             // initialize the right/wrong arrays, secret word, and guess/wrong strings
-            var rightArray = ["_","_","_","_","_"];
+            var rightArray = ["_","_","_","_","_"]; // make function to build the array - associate with pulldown choice
             var wrongArray = [];
-            var secret = "apple";
+            var secret = "apple"; // use random choice method
             var guess = "";
 
             // assign Element ID to a variable
@@ -82,7 +89,7 @@
 
             // Function to run whenever user presses a key
             document.onkeyup = function(event) {
-                // assign the key pressed and gotit to a variable
+                // assign the key pressed and initialize gotit var
                 var guess = event.key;
                 var gotit = 0;
 
@@ -97,6 +104,7 @@
                 }
                 // if the character was not in the secret word and not in the wrongArray, then add it
                 gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
+
                 // if (gotit < 1 && wrongArray.indexOf(guess) == -1) {
                 //     // set the indexnum for the console.log
                     // var indexnum = wrongArray.indexOf(guess);
@@ -105,13 +113,14 @@
                 //     indexnum < 0 ? wrongArray.push(guess) : null ;
                 // }
 
-                // join the arrays to prepare for the document
+                // join the arrays to prepare for the displaying in the document
                 var rightString = rightArray.join(" ");
                 var wrongString = wrongArray.join(" ");
                 console.log("R - " + rightString);
                 console.log("W - " + wrongString);
 
                 // document.getElementById("demo").innerHTML = hangman.join(" ");
+
                 rightText.textContent = "Your secret word: " + rightString;
                 wrongText.textContent = "Your wrong guesses: " + wrongString;
 
