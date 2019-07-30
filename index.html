@@ -6,12 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Word Guess Game</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style>
+    <link href="https://fonts.googleapis.com/css?family=Bowlby One">
+   
+   <style>
     .my-comments {
         text-align: center;
         color: #1b2a80;
         font-weight: 700;
+    }
+    #header-font {
+        font-family: "Bowlby One", "Segoe UI", san-serif;
+        text-align: center;
     }
     .secret-word-box {
         padding: 15px;
@@ -23,33 +28,31 @@
         background-image: linear-gradient(to left, #f3db51, #ffffcb);
         margin-bottom: 10px;
     }
-    .text-container {
-        width: 100%;
-        max-width: 560px;
-    }
     .button-container {
         width: 100%;
         max-width: 300px;
     }
-    .western-image {
-        background-image: url("assets/images/western_town.jpg");
+    .opClass {
+        opacity:0.4;
+    }
+    #western-image {
+        background-image: url("assets/images/desert2.jpg");
         background-color: #cccccc;
-        height: 500px;
+        height: 400px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         position: relative;
     }
     </style>
-
 </head>
 <body>
 
     
     
 <!-- Header -->
-<div class="container western-image">
-        <h1 class="text-center">Word Guess Game</h1>
+<div class="container" id="western-image">
+        <h1 id="header-font">Word Guess Game</h1>
     
         <!-- Instructions -->
         <p class="my-comments" >Select a category. Type to discover the secret word(s).</p>
@@ -69,23 +72,27 @@
             </div>
         </div>
 
-        <!-- User Scoreboard and Guessed Letters -->
-        <div class="container text-container" style="padding-top:40px;float:left">
-            <div class="secret-word-box">
-                <h4>Your secret word</h4>
-                <h3 Id="right-text"></h3>
-            </div>
+        <!-- User Scoreboard and Guessed Letters on left side (col 9) -->
+        <div class="container" style="padding-top:40px">
+            <div class="row justify-content-md-center">
+                <div class="col-md-9">
+                    <div class="secret-word-box">
+                        <h4>Your secret word</h4>
+                        <h3 Id="right-text"></h3>
+                    </div>
 
-            <div class="wrong-chars-box">
-                <h4>Your wrong guesses</h4>
-                <h3 Id="wrong-text"></h3>
+                    <div class="wrong-chars-box">
+                        <h4>Your wrong guesses</h4>
+                        <h3 Id="wrong-text"></h3>
+                    </div>
+                </div>
+
+                <!-- Hanging man image on the right side (col-3) -->
+                <div class="col-md-3">
+                   <img src="assets/images/man.png" style="height:160px;width:auto;">
+                </div>
             </div>
         </div>
-
-
-        <!-- Word image -->
-        <img src="assets/images/man.png" style="height:200px;width:auto;float:right;">
-    
 
 <!-- JavaScript -->
 
@@ -101,7 +108,8 @@
             // setting $ to be shorthand for document.getElementById
             function $(x) {return document.getElementById(x);}
 
-            // var selText; GLOBAL VAR
+            // set opacity of background image -- NO EFFECT
+           $("western-image").setAttribute("style","opacity:0.95");
             
             // function to capture button text in category dropdown list
             function getText() {
@@ -141,7 +149,7 @@
             }
 
     // VARIABLES FOR TESTING
-            var userSelection = "3"; // get pulldown selection
+            var userSelection = "1"; // get pulldown selection
 
     // CALL FUNCTIONS TO GENERATE SECRET WORD AND ARRAY FOR PAGE DISPLAY
             // Make secret word
