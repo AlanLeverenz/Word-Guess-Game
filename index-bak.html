@@ -8,54 +8,25 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <style>
-    .my-comments {
+    .text-center p {
         text-align: center;
-        color: #1b2a80;
-        font-weight: 700;
     }
-    .secret-word-box {
-        padding: 15px;
-        background-image: linear-gradient(to left, #83c3f8, #dbf0fa);
-        margin-bottom: 10px;
-    }
-    .wrong-chars-box {
-        padding: 15px;
-        background-image: linear-gradient(to left, #f3db51, #ffffcb);
-        margin-bottom: 10px;
-    }
-    .text-container {
-        width: 100%;
-        max-width: 560px;
-    }
-    .button-container {
-        width: 100%;
-        max-width: 300px;
-    }
-    .western-image {
-        background-image: url("assets/images/western_town.jpg");
-        background-color: #cccccc;
-        height: 500px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
-    }
+    
     </style>
 
 </head>
 <body>
-
-    
     
 <!-- Header -->
-<div class="container western-image">
-        <h1 class="text-center">Word Guess Game</h1>
+<div class="container">
+        <h2 class="text-center">Word Guess Game</h2>
     
         <!-- Instructions -->
-        <p class="my-comments" >Select a category. Type to discover the secret word(s).</p>
+        <p class="text-center">Select a category. Type to discover the secret word(s).</p>
+        <p class="text-center">Good luck!</p>
     
         <!-- Category pull-down -->
-        <div class="container button-container">
+        <div class="container">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Choose a Category
@@ -67,56 +38,57 @@
                     <button class="dropdown-item" type="button" id="catItem4" onclick="getText()">Nature's Fury</button>
                 </div>
             </div>
-        </div>
+    
+        <!-- Select random category word -->
+        <!-- Update the div image, set opacity to 0 -->  
+        <!-- User input -->
+        <!-- Word characters display -->
 
-        <!-- User Scoreboard and Guessed Letters -->
-        <div class="container text-container" style="padding-top:40px;float:left">
+        <div class="container" style="padding-top:40px;">
             <div class="secret-word-box">
-                <h4>Your secret word</h4>
-                <h3 Id="right-text"></h3>
+                <p Id="rightText"></p>
             </div>
 
             <div class="wrong-chars-box">
-                <h4>Your wrong guesses</h4>
-                <h3 Id="wrong-text"></h3>
+                <p Id="wrongText"></p>
             </div>
         </div>
 
-
+        <!-- User Scoreboard and Guessed Letters -->
         <!-- Word image -->
-        <img src="assets/images/man.png" style="height:200px;width:auto;float:right;">
+    
+    </div>
     
 
 <!-- JavaScript -->
 
     <script type="text/javascript">
 
-    // OUTLINE BEHAVIORS
-            // Ways to start/pause the program:
-            // 1. load or reload the URL
-            // 2. select a category using the pulldown to create a new secret word
-            // 3. When the secret word is filled out, raise a congratulatory alert message/sound
+        // Ways to start/pause the program:
+        // 1. load or reload the URL
+        // 2. select a category using the pulldown to create a new secret word
+        // 3. When the secret word is filled out, raise a congratulatory alert message/sound
  
-    // CODE FOR PASSING TEXT FROM BUTTON DROPDOWN THAT WAS CLICKED ON
+            // JS sample code for getting the text of a dropdown toggle that was clicked on
+
             // setting $ to be shorthand for document.getElementById
             function $(x) {return document.getElementById(x);}
 
-            // var selText; GLOBAL VAR
+            var selText;
             
             // function to capture button text in category dropdown list
             function getText() {
-                var selText = $(this).text();
+                selText = $(this).text();
                 return selText;
                 console.log("Button text is: " + selText);
             }
 
-            // JS FOR CHANGING PARENT BUTTON NAME
             // $(".dropdown-menu button").onclick = (function(){
             // var selText = $(this).text();
             // $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
             // });
 
-    // ARRAYS FOR DROPDOWN
+            // secret word arrays
             var sportsArray = ["curling","futsal","lawn bowling","hang gliding","ice hockey","rock climbing","cricket","wind surfing","cross country","lacrosse"];
             var presidentsArray = ["barack obama","abraham lincoln","theodore roosevelt","john kennedy","george washington","thomas jefferson","harry truman","james monroe","andrew jackson"];
             var jazzGreatsArray = ["duke ellington","john coltrane","charlie parker","thelonius monk","dave brubeck","bill evans","oscar peterson","louis armstrong","art tatum"];
@@ -124,46 +96,46 @@
             var chooseCategoryArray = ["choose a category"];
             var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
 
-    // FUNCTIONS
             // make function to build the array - associate with category pulldown selection
-            function makeSecretWord (catArray,index) {
-                var secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
-                return secretIndex;
+            function makeSecretWord (catArray,arrayIndex) {
+                var itemIndex = [Math.floor(Math.random() * catArray.length)];
+                var secretText = catArray[arrayIndex][itemIndex];
+
+                return itemIndex; 
+                return secretText; 
             }
 
+            // test
+            var userSelection, secretWord;
+
+            userSelection = "2"; // get pulldown selection - WHY NOT WORKING?
+            secretWord = makeSecretWord (categoryArray,2);
+            console.log("Secret word = " + secretWord);
+
             // function to build the wordArray and rightArray to display the characters on the page
-            function makeSecretArray (thisArray,pageArray,myWord) {
+            function makeSecretArray (realArray,pageArray,myWord) {
                 for ( i = 0 ; i < myWord.length ; i++ ) {
-                    thisArray.push(myWord.charAt(i));
+                    // realArray.push(myWord.charAt(i));
                     pageArray.push("_");
                 }
                 return pageArray;
-            }
+                }
 
-    // VARIABLES FOR TESTING
-            var userSelection = "3"; // get pulldown selection
-
-    // CALL FUNCTIONS TO GENERATE SECRET WORD AND ARRAY FOR PAGE DISPLAY
-            // Make secret word
-            secretWord = makeSecretWord (categoryArray,1);
-            console.log("Secret word = " + secretWord);
-
-            // Make arrays for page display
+            // test
             var rightArray = [];
             var wordArray = [];
-
             makeSecretArray(wordArray,rightArray,secretWord);
             console.log("rightArray = " + rightArray) ;
 
-    // ACTIVATE ONKEYUP EVENT
+            // initialize wrongArray, secret and guess string variables
+            var wrongArray = [];
+            var secret = secretWord; // assign secretWord from random function
+            var guess = "";
+
             // assign Element ID to a variable
             var userChoiceText = document.getElementById("userchoice-text");
 
             // Function to run whenever user presses a key
-            var secret = secretWord; // assign secretWord from random function
-            var guess = "";
-            var wrongArray = []; //built as user presses wrong keys
-
             document.onkeyup = function(event) {
                 // assign the key pressed and initialize gotit var
                 var guess = event.key;
@@ -181,11 +153,13 @@
                 // if the character is not in the secret word and not in the wrongArray, then add it to the list of wrong guesses
                 gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
 
-    // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG
-                
-                // set vars for document.GetElementById
-                var rightText = document.getElementById("right-text");
-                var wrongText = document.getElementById("wrong-text");
+                // if (gotit < 1 && wrongArray.indexOf(guess) == -1) {
+                //     // set the indexnum for the console.log
+                    // var indexnum = wrongArray.indexOf(guess);
+                    // console.log(i + ": W - " + indexnum);
+                //     //  if indexnum is -1 is ok to add (ternary)
+                //     indexnum < 0 ? wrongArray.push(guess) : null ;
+                // }
 
                 // join the arrays to display in the document
                 var rightString = rightArray.join(" ");
@@ -195,17 +169,10 @@
 
                 // document.getElementById("demo").innerHTML = hangman.join(" ");
 
-                // generate the text and pass to the HTML page
-                rightText.textContent = rightString;
-                wrongText.textContent = wrongString;
-
-    // WHY? GETTING NULL RESULT FROM LINES BELOW
-                // document.getElementById("righttext").style.fontWeight = 800;
-                // document.getElementById("wrongtext").style.fontWeight = 800;
+                rightText.textContent = "Your secret word: " + rightString;
+                wrongText.textContent = "Your wrong guesses: " + wrongString;
 
             } // end of onkeyup function
-
-    // BIN BAG FOR TEST CODE
 
         // function to capture the pulldown item selected
         // $(".dropdown").on("show.bs.dropdown", function(event){
