@@ -7,6 +7,11 @@
    #header-font {
        font-family: "Segoe UI", san-serif;
        text-align: center;
+       padding-top: 20px;
+   }
+   #current-category {
+       font-style: italic;
+       color: #3042a8;
    }
    .secret-word-box {
        padding: 15px;

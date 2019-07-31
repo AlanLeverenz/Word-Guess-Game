@@ -22,26 +22,30 @@
         <p class="my-comments" >Select a category. Type to discover the secret word(s).</p>
     
         <!-- Category pull-down -->
+
+        <!-- BOOTSTRAP DROPDOWN A LIST -->
         <div class="container button-container">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Choose a Category
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cat-list">
-                    <a class="dropdown-item" href="#" id="cat-0">Sports</button>
-                    <a class="dropdown-item" href="#" id="cat-1">Presidents</button>
-                    <a class="dropdown-item" href="#" id="cat-2">Jazz Greats</button>
-                    <a class="dropdown-item" href="#" id="cat-3">Nature's Fury</button>
+                    <a class="dropdown-item" href="#" value="0">Sports</button>
+                    <a class="dropdown-item" href="#" value="1">Presidents</button>
+                    <a class="dropdown-item" href="#" value="2">Jazz Greats</button>
+                    <a class="dropdown-item" href="#" value="3">Nature's Fury</button>
                 </div>
             </div>
         </div>
 
-        <div class="container" id="current-category"></div>
+        <!-- hidden div to display user selection -->
+        <div class="container" id="current-category"> </div>
 
-        <!-- User Scoreboard and Guessed Letters on left side (col 9) -->
-        <div class="container" style="padding-top:40px">
-            <div class="row justify-content-md-center">
+        <!-- secret word and wrong guess boxes (col 9) -->
+        <div class="container" style="padding-top:20px">
+            <div class="row justify-content-sm-center">
                 <div class="col-md-9">
+                    
                     <div class="secret-word-box">
                         <h4>Your secret word</h4>
                         <h3 Id="right-text"></h3>
@@ -54,7 +58,7 @@
                 </div>
 
                 <!-- Hanging man image on the right side (col-3) -->
-                <div class="col-md-3">
+                <div class="col-sm-3">
                    <img src="assets/images/man.png" style="height:160px;width:auto;">
                 </div>
             </div>
@@ -74,48 +78,11 @@
 
     // DRIN - HERE ARE THE JQUERY FUNCTIONS 
 
-                // USER SELECTS "SPORTS"
-                $("#cat-0").on( "click", function() {
-                    var catText1 = $("#cat-0 option:selected").text();
-                    var catText2 = $("#cat-0 a:selected").text();
-                    var catText3 = $('select').children(':selected').text();
-                    var userSelection = 0 ;
-                    $("#current-category").html("<h2>" + catText1 + "</h2>");
-                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
-                });
-                // USER SELECTS "PRESIDENTS"
-                $("#cat-1").on( "click", function() {
-                    var catText1 = $("#cat-0 option:selected").text();
-                    var catText2 = $("#cat-0 a:selected").text();
-                    var catText3 = $('select').children(':selected').text();
-                    var userSelection = 1 ;
-                    $("#current-category").html("<h2>" + catText1 + "</h2>");
-                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
-                });
-                // USER SELECTS "JAZZ GREATS"
-                $("#cat-2").on( "click", function() {
-                    var catText1 = $("#cat-0 option:selected").text();
-                    var catText2 = $("#cat-0 a:selected").text();
-                    var catText3 = $('select').children(':selected').text();
-                    var userSelection = 2 ;
-                    $("#current-category").html("<h2>" + catText1 + "</h2>");
-                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
-                });
-                // USER SELECTS "NATURE'S FURY"
-                $("#cat-3").on( "click", function() {
-                    var catText1 = $("#cat-0 option:selected").text();
-                    var catText2 = $("#cat-0 a:selected").text();
-                    var catText3 = $('select').children(':selected').text();
-                    var userSelection = 3 ;
-                    $("#current-category").html("<h2>" + catText1 + "</h2>");
-                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
-                });
-
-                // JS FOR CHANGING PARENT BUTTON NAME
-                // $(".dropdown-menu button").onclick = (function(){
-                // var selText = $(this).text();
-                // $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
-                // });
+            $(".dropdown-menu a").click(function() {
+                var catText = $(this).text();
+                $("#current-category").html("<h4 id='user-select'>" + catText + "</h4>");
+                console.log(catText);
+            });
 
     // ARRAYS FOR DROPDOWN
             var sportsArray = ["curling","futsal","lawn bowling","hang gliding","ice hockey","rock climbing","cricket","wind surfing","cross country","lacrosse"];
@@ -124,6 +91,7 @@
             var naturesFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","monsoon","blizzard","tornado","forest fire"];
             var chooseCategoryArray = ["choose a category"];
             var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
+            var textArray = { "Sports":"0","Presidents":"1","Jazz Greats":"2","Nature's Fury":"3" };
 
     // FUNCTIONS
             // make function to build the array - associate with category pulldown selection
@@ -142,13 +110,23 @@
             }
 
     // VARIABLES FOR TESTING
-            var userSelection = "2"; // HARD-CODED UNTIL JQUERY WORKS
+
+            // get user selected text from getElementId
+
+            // #user-select method to get category text. may be susceptible to loading time.
+            // var textSelected = $("#user-select").value;
+            //     console.log("userSelected: " + textSelected);
+                          
+            // var indexSelected = textArray[textSelected];
+            // console.log("Key value: " + indexSelected);
+
+            var indexSelected = "2"; // HARD-CODED UNTIL JQUERY WORKS
 
     // CALL FUNCTIONS TO GENERATE SECRET WORD AND ARRAY FOR PAGE DISPLAY
             // Make secret word
-            secretWord = makeSecretWord (categoryArray,userSelection);
+            secretWord = makeSecretWord (categoryArray,indexSelected);
             console.log("Secret word = " + secretWord);
-            console.log("userSelection: " + userSelection);
+            console.log("indexSelected: " + indexSelected);
 
             // Make arrays for page display
             var rightArray = [];
