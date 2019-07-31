@@ -1,0 +1,35 @@
+  
+   .my-comments {
+       text-align: center;
+       color: #1b2a80;
+       font-weight: 700;
+   }
+   #header-font {
+       font-family: "Segoe UI", san-serif;
+       text-align: center;
+   }
+   .secret-word-box {
+       padding: 15px;
+       background-image: linear-gradient(to left, #83c3f8, #dbf0fa);
+       margin-bottom: 10px;
+   }
+   .wrong-chars-box {
+       padding: 15px;
+       background-image: linear-gradient(to left, #f3db51, #ffffcb);
+       margin-bottom: 10px;
+   }
+   .button-container {
+       width: 100%;
+       max-width: 300px;
+   }
+   .opClass {
+       opacity:0.4;
+   }
+   #western-image {
+       background-image: url("../images/desert2.jpg");
+       background-color: #cccccc;
+       background-position: center;
+       background-repeat: no-repeat;
+       background-size: cover;
+       position: relative;
+   }

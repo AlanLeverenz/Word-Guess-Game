@@ -5,50 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Word Guess Game</title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Bowlby One">
-   
-   <style>
-    .my-comments {
-        text-align: center;
-        color: #1b2a80;
-        font-weight: 700;
-    }
-    #header-font {
-        font-family: "Bowlby One", "Segoe UI", san-serif;
-        text-align: center;
-    }
-    .secret-word-box {
-        padding: 15px;
-        background-image: linear-gradient(to left, #83c3f8, #dbf0fa);
-        margin-bottom: 10px;
-    }
-    .wrong-chars-box {
-        padding: 15px;
-        background-image: linear-gradient(to left, #f3db51, #ffffcb);
-        margin-bottom: 10px;
-    }
-    .button-container {
-        width: 100%;
-        max-width: 300px;
-    }
-    .opClass {
-        opacity:0.4;
-    }
-    #western-image {
-        background-image: url("assets/images/desert2.jpg");
-        background-color: #cccccc;
-        height: 400px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
-    }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-    
     
 <!-- Header -->
 <div class="container" id="western-image">
@@ -63,14 +27,16 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Choose a Category
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <button class="dropdown-item" type="button" id="catItem1" onclick="getText()">Sports</button>
-                    <button class="dropdown-item" type="button" id="catItem2" onclick="getText()">Presidents</button>
-                    <button class="dropdown-item" type="button" id="catItem3" onclick="getText()">Jazz Greats</button>
-                    <button class="dropdown-item" type="button" id="catItem4" onclick="getText()">Nature's Fury</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cat-list">
+                    <a class="dropdown-item" href="#" id="cat-0">Sports</button>
+                    <a class="dropdown-item" href="#" id="cat-1">Presidents</button>
+                    <a class="dropdown-item" href="#" id="cat-2">Jazz Greats</button>
+                    <a class="dropdown-item" href="#" id="cat-3">Nature's Fury</button>
                 </div>
             </div>
         </div>
+
+        <div class="container" id="current-category"></div>
 
         <!-- User Scoreboard and Guessed Letters on left side (col 9) -->
         <div class="container" style="padding-top:40px">
@@ -103,26 +69,53 @@
             // 1. load or reload the URL
             // 2. select a category using the pulldown to create a new secret word
             // 3. When the secret word is filled out, raise a congratulatory alert message/sound
- 
-    // CODE FOR PASSING TEXT FROM BUTTON DROPDOWN THAT WAS CLICKED ON
-            // setting $ to be shorthand for document.getElementById
-            function $(x) {return document.getElementById(x);}
 
-            // set opacity of background image -- NO EFFECT
-           $("western-image").setAttribute("style","opacity:0.95");
-            
-            // function to capture button text in category dropdown list
-            function getText() {
-                var selText = $(this).text();
-                return selText;
-                console.log("Button text is: " + selText);
-            }
+            $(document).ready(function() {
 
-            // JS FOR CHANGING PARENT BUTTON NAME
-            // $(".dropdown-menu button").onclick = (function(){
-            // var selText = $(this).text();
-            // $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
-            // });
+    // DRIN - HERE ARE THE JQUERY FUNCTIONS 
+
+                // USER SELECTS "SPORTS"
+                $("#cat-0").on( "click", function() {
+                    var catText1 = $("#cat-0 option:selected").text();
+                    var catText2 = $("#cat-0 a:selected").text();
+                    var catText3 = $('select').children(':selected').text();
+                    var userSelection = 0 ;
+                    $("#current-category").html("<h2>" + catText1 + "</h2>");
+                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
+                });
+                // USER SELECTS "PRESIDENTS"
+                $("#cat-1").on( "click", function() {
+                    var catText1 = $("#cat-0 option:selected").text();
+                    var catText2 = $("#cat-0 a:selected").text();
+                    var catText3 = $('select').children(':selected').text();
+                    var userSelection = 1 ;
+                    $("#current-category").html("<h2>" + catText1 + "</h2>");
+                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
+                });
+                // USER SELECTS "JAZZ GREATS"
+                $("#cat-2").on( "click", function() {
+                    var catText1 = $("#cat-0 option:selected").text();
+                    var catText2 = $("#cat-0 a:selected").text();
+                    var catText3 = $('select').children(':selected').text();
+                    var userSelection = 2 ;
+                    $("#current-category").html("<h2>" + catText1 + "</h2>");
+                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
+                });
+                // USER SELECTS "NATURE'S FURY"
+                $("#cat-3").on( "click", function() {
+                    var catText1 = $("#cat-0 option:selected").text();
+                    var catText2 = $("#cat-0 a:selected").text();
+                    var catText3 = $('select').children(':selected').text();
+                    var userSelection = 3 ;
+                    $("#current-category").html("<h2>" + catText1 + "</h2>");
+                    console.log("catText1: " + catText1 + "; catText2: " + catText2 + "; + catText3" + catText3);
+                });
+
+                // JS FOR CHANGING PARENT BUTTON NAME
+                // $(".dropdown-menu button").onclick = (function(){
+                // var selText = $(this).text();
+                // $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+                // });
 
     // ARRAYS FOR DROPDOWN
             var sportsArray = ["curling","futsal","lawn bowling","hang gliding","ice hockey","rock climbing","cricket","wind surfing","cross country","lacrosse"];
@@ -135,7 +128,7 @@
     // FUNCTIONS
             // make function to build the array - associate with category pulldown selection
             function makeSecretWord (catArray,index) {
-                var secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
+                secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
                 return secretIndex;
             }
 
@@ -149,12 +142,13 @@
             }
 
     // VARIABLES FOR TESTING
-            var userSelection = "1"; // get pulldown selection
+            var userSelection = "2"; // HARD-CODED UNTIL JQUERY WORKS
 
     // CALL FUNCTIONS TO GENERATE SECRET WORD AND ARRAY FOR PAGE DISPLAY
             // Make secret word
-            secretWord = makeSecretWord (categoryArray,1);
+            secretWord = makeSecretWord (categoryArray,userSelection);
             console.log("Secret word = " + secretWord);
+            console.log("userSelection: " + userSelection);
 
             // Make arrays for page display
             var rightArray = [];
@@ -168,7 +162,6 @@
             var userChoiceText = document.getElementById("userchoice-text");
 
             // Function to run whenever user presses a key
-            var secret = secretWord; // assign secretWord from random function
             var guess = "";
             var wrongArray = []; //built as user presses wrong keys
 
@@ -179,14 +172,14 @@
 
                 // see IF it matches characters in the secret word
                 //  if so, replace that item in the hangman array
-                for ( i = 0 ; i < secret.length ; i++ ) {
-                    if (secret.charAt(i) === guess ) {
+                for ( i = 0 ; i < secretWord.length ; i++ ) {
+                    if (secretWord.charAt(i) === guess ) {
                         rightArray[i] = guess; 
                         // console.log(i + ": R - " + guess);
                         gotit++;
                     } 
                 }
-                // if the character is not in the secret word and not in the wrongArray, then add it to the list of wrong guesses
+                // if the character is not in the secret word and not in the wrongArray, add it to wrong guesses array
                 gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
 
     // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG
@@ -207,27 +200,10 @@
                 rightText.textContent = rightString;
                 wrongText.textContent = wrongString;
 
-    // WHY? GETTING NULL RESULT FROM LINES BELOW
-                // document.getElementById("righttext").style.fontWeight = 800;
-                // document.getElementById("wrongtext").style.fontWeight = 800;
-
             } // end of onkeyup function
 
-    // BIN BAG FOR TEST CODE
+        }); // document.ready function
 
-        // function to capture the pulldown item selected
-        // $(".dropdown").on("show.bs.dropdown", function(event){
-        //     var x = $(event.relatedTarget).text(); // Get the text of the element
-        //     alert(x);
-        //     });
-
-        // function inArray(needle,haystack) {
-        // for (var j=0 ; i < haystack.length ; j++ ) {
-        //     if ( haystack[j] === needle ) {
-        //         return true; 
-        //         }
-        //     }
-        //     return false;
     </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
