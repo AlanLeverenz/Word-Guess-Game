@@ -1,10 +1,10 @@
   
    .my-comments {
        text-align: center;
-       color: #1b2a80;
-       font-weight: 700;
+       color: #2d3d97;
+       font-weight: 600;
    }
-   #header-font {
+   #game-header {
        font-family: "Segoe UI", san-serif;
        text-align: center;
        padding-top: 20px;
@@ -37,4 +37,8 @@
        background-repeat: no-repeat;
        background-size: cover;
        position: relative;
+   }
+   .min {
+       min-width: 42px;
+       background-color: none;
    }

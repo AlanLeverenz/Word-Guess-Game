@@ -16,30 +16,66 @@
     
 <!-- Header -->
 <div class="container" id="western-image">
-        <h1 id="header-font">Word Guess Game</h1>
+        <h1 id="game-header">Word Guess Game</h1>
     
         <!-- Instructions -->
-        <p class="my-comments" >Select a category. Type to discover the secret word(s).</p>
+        <p class="my-comments" >Choose a category. Click "Go" and type the secret word(s).</p>
     
-        <!-- Category pull-down -->
 
-        <!-- BOOTSTRAP DROPDOWN A LIST -->
-        <div class="container button-container">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Choose a Category
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cat-list">
-                    <a class="dropdown-item" href="#" value="0">Sports</button>
-                    <a class="dropdown-item" href="#" value="1">Presidents</button>
-                    <a class="dropdown-item" href="#" value="2">Jazz Greats</button>
-                    <a class="dropdown-item" href="#" value="3">Nature's Fury</button>
+        <!-- First row has Choose a Category button and empty div for comments to the user -->
+        <div class="container" style="padding-top:20px">
+            <div class="row justify-content-sm-center">
+
+                <!-- Choose a category button -->
+                <div class="col-sm-9">
+                    <div class="container button-container">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Choose a Category
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cat-list">
+                                <a class="dropdown-item" href="#" value="0">Sports</button>
+                                <a class="dropdown-item" href="#" value="1">Presidents</button>
+                                <a class="dropdown-item" href="#" value="2">Jazz Greats</button>
+                                <a class="dropdown-item" href="#" value="3">Nature's Fury</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty div for displaying messages to the user -->
+                <div class="col-sm-3">
+                    <div id="messages"> </div>
+                </div>
+            </div>
+        <!-- </div> -->
+
+        <!-- Second row holds the hidden category, the "Go" button, and the score cards -->
+        <!-- <div class="container"> -->
+            <div class="row justify-content-sm-center">
+
+                <!-- Go button -->
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary">GO</button>
+                </div>
+
+                <!-- hidden div to display user category  selection -->
+                <div class="col-sm-6">
+                    <div id="current-category"> </div>
+                </div>
+                    
+                <!-- the score cards (buttons) -->
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-info">
+                        <img src="assets/images/thumb-up.png" width="32px"> <span class="badge badge-light">0</span>
+                    </button>
+
+                    <button type="button" class="btn btn-info">
+                        <img src="assets/images/thumb-down.png" width="32px"> <span class="badge badge-light">0</span>
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- hidden div to display user selection -->
-        <div class="container" id="current-category"> </div>
 
         <!-- secret word and wrong guess boxes (col 9) -->
         <div class="container" style="padding-top:20px">
@@ -59,7 +95,9 @@
 
                 <!-- Hanging man image on the right side (col-3) -->
                 <div class="col-sm-3">
-                   <img src="assets/images/man.png" style="height:160px;width:auto;">
+                    <div>
+                       <img src="assets/images/man_gray.png" style="height:160px;width:auto;" id="hanging-man">
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,114 +108,128 @@
 
     // OUTLINE BEHAVIORS
             // Ways to start/pause the program:
-            // 1. load or reload the URL
+            // 1. load or reload the URL to start fresh
             // 2. select a category using the pulldown to create a new secret word
-            // 3. When the secret word is filled out, raise a congratulatory alert message/sound
-
-            $(document).ready(function() {
-
-    // DRIN - HERE ARE THE JQUERY FUNCTIONS 
-
-            $(".dropdown-menu a").click(function() {
-                var catText = $(this).text();
-                $("#current-category").html("<h4 id='user-select'>" + catText + "</h4>");
-                console.log(catText);
-            });
+            // 3. Click GO button to activate finding a word
+            // 4. When the secret word is filled out, raise a congratulatory alert message/sound
+            // 5. With each wrong guess insert a comment and change the hanging man png
+            // 6. Increment the wins-losses variables as games are won or lost
+            // 7. Initialize the word boxes each time Go button is clicked
 
     // ARRAYS FOR DROPDOWN
-            var sportsArray = ["curling","futsal","lawn bowling","hang gliding","ice hockey","rock climbing","cricket","wind surfing","cross country","lacrosse"];
-            var presidentsArray = ["barack obama","abraham lincoln","theodore roosevelt","john kennedy","george washington","thomas jefferson","harry truman","james monroe","andrew jackson"];
-            var jazzGreatsArray = ["duke ellington","john coltrane","charlie parker","thelonius monk","dave brubeck","bill evans","oscar peterson","louis armstrong","art tatum"];
-            var naturesFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","monsoon","blizzard","tornado","forest fire"];
-            var chooseCategoryArray = ["choose a category"];
-            var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
-            var textArray = { "Sports":"0","Presidents":"1","Jazz Greats":"2","Nature's Fury":"3" };
+    var sportsArray = ["curling","futsal","lawn bowling","hang gliding","ice hockey","rock climbing","cricket","wind surfing","cross country","lacrosse"];
+    var presidentsArray = ["barack obama","abraham lincoln","theodore roosevelt","john kennedy","george washington","thomas jefferson","harry truman","james monroe","andrew jackson"];
+    var jazzGreatsArray = ["duke ellington","john coltrane","charlie parker","thelonius monk","dave brubeck","bill evans","oscar peterson","louis armstrong","art tatum"];
+    var naturesFuryArray = ["hurricane","earthquake","typhoon","volcano","flash flood","monsoon","blizzard","tornado","forest fire"];
+    var chooseCategoryArray = ["choose a category"];
+    var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
+    var textArray = { "Sports":"0","Presidents":"1","Jazz Greats":"2","Nature's Fury":"3" };
+    var hangingManArray = ["man_gray.png","man_brace.png","man_head.png","man_body.png","man_one_arm.png","man_both_arms.png","man_one_leg.png","man_hung.png"]
+    var commentsArray = ["You got this!","What's that thing for?","Gulp!","You got the answer yet?","Oh jeez!","Don't screw this up now!","Mommy!","You're a goner!"]
 
     // FUNCTIONS
-            // make function to build the array - associate with category pulldown selection
-            function makeSecretWord (catArray,index) {
-                secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
-                return secretIndex;
-            }
+    // make function to build the array - associate with category pulldown selection
+    function makeSecretWord (catArray,index) {
+        secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
+        return secretIndex;
+    }
 
-            // function to build the wordArray and rightArray to display the characters on the page
-            function makeSecretArray (thisArray,pageArray,myWord) {
-                for ( i = 0 ; i < myWord.length ; i++ ) {
-                    thisArray.push(myWord.charAt(i));
-                    pageArray.push("_");
-                }
-                return pageArray;
-            }
+    // function to build the wordArray and rightArray to display the characters on the page
+    function makeSecretArray (thisArray,pageArray,myWord) {
+        for ( i = 0 ; i < myWord.length ; i++ ) {
+            thisArray.push(myWord.charAt(i));
+            pageArray.push("_");
+        }
+        return pageArray;
+    }
 
-    // VARIABLES FOR TESTING
 
-            // get user selected text from getElementId
+    // CATEGORY BUTTON DROPDOWN CLICK SELECT INSERT CHOICE ON PAGE
+    $(document).ready(function() {
 
-            // #user-select method to get category text. may be susceptible to loading time.
-            // var textSelected = $("#user-select").value;
-            //     console.log("userSelected: " + textSelected);
-                          
-            // var indexSelected = textArray[textSelected];
-            // console.log("Key value: " + indexSelected);
+        $(".dropdown-menu a").click(function() {
+            var catText = $(this).text();
+            $("#current-category").html("<h4 id='user-select'>" + catText + "</h4>");
+            console.log(catText);
+            return catText;
+        });
 
-            var indexSelected = "2"; // HARD-CODED UNTIL JQUERY WORKS
+    }); // end of document.ready function
+
+
+
+    // WHEN THE USER CLICKS GO BUTTON...
+
+    $(document).ready(function() {
+
+        // #user-select method to get category text. may be susceptible to loading time.
+        var textSelected = $("#user-select").value;
+        console.log("userSelected: " + textSelected);
+                        
+        var indexSelected = textArray[textSelected];
+        console.log("Key value: " + indexSelected);
+
+    }); // end of document.ready function
+
 
     // CALL FUNCTIONS TO GENERATE SECRET WORD AND ARRAY FOR PAGE DISPLAY
-            // Make secret word
-            secretWord = makeSecretWord (categoryArray,indexSelected);
-            console.log("Secret word = " + secretWord);
-            console.log("indexSelected: " + indexSelected);
+    // Make secret word
+    var indexSelected = "2"; // HARD-CODED UNTIL JQUERY WORKS
 
-            // Make arrays for page display
-            var rightArray = [];
-            var wordArray = [];
+    secretWord = makeSecretWord (categoryArray,indexSelected);
+    console.log("Secret word = " + secretWord);
+    console.log("indexSelected: " + indexSelected);
 
-            makeSecretArray(wordArray,rightArray,secretWord);
-            console.log("rightArray = " + rightArray) ;
+    // Make arrays for page display
+    var rightArray = [];
+    var wordArray = [];
 
-    // ACTIVATE ONKEYUP EVENT
-            // Function to run whenever user presses a key
-            var guess = "";
-            var wrongArray = []; //built as user presses wrong keys
+    makeSecretArray(wordArray,rightArray,secretWord);
+    console.log("rightArray = " + rightArray) ;
 
-            document.onkeyup = function(event) {
-                // assign the key pressed and initialize gotit var
-                var guess = event.key;
-                var gotit = 0;
 
-                // see IF it matches characters in the secret word
-                //  if so, replace that item in the hangman array
-                for ( i = 0 ; i < secretWord.length ; i++ ) {
-                    if (secretWord.charAt(i) === guess ) {
-                        rightArray[i] = guess; 
-                        // console.log(i + ": R - " + guess);
-                        gotit++;
-                    } 
-                }
-                // if the character is not in the secret word and not in the wrongArray, add it to wrong guesses array
-                gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
+    // ONKEYUP EVENT
+    // Function to run whenever user presses a key
+    var guess = "";
+    var wrongArray = []; //built as user presses wrong keys
 
-    // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG
-                
-                // set vars for document.GetElementById
-                var rightText = document.getElementById("right-text");
-                var wrongText = document.getElementById("wrong-text");
+    document.onkeyup = function(event) {
+        // assign the key pressed and initialize gotit var
+        var guess = event.key;
+        var gotit = 0;
 
-                // join the arrays to display in the document
-                var rightString = rightArray.join(" ");
-                var wrongString = wrongArray.join(" ");
-                console.log("R - " + rightString);
-                console.log("W - " + wrongString);
+        // see if it matches characters in the secret word
+        //  if so, replace that item in the hangman array
+        for ( i = 0 ; i < secretWord.length ; i++ ) {
+            if (secretWord.charAt(i) === guess ) {
+                rightArray[i] = guess; 
+                // console.log(i + ": R - " + guess);
+                gotit++;
+            } 
+        }
+        // if the character is not in the secret word and not in the wrongArray, add it to wrong guesses array
+        gotit < 1 && wrongArray.indexOf(guess) == -1 ? wrongArray.push(guess) : null ;
 
-                // document.getElementById("demo").innerHTML = hangman.join(" ");
 
-                // generate the text and pass to the HTML page
-                rightText.textContent = rightString;
-                wrongText.textContent = wrongString;
+        // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG
+                    
+        // set vars for document.GetElementById
+        var rightText = document.getElementById("right-text");
+        var wrongText = document.getElementById("wrong-text");
 
-            } // end of onkeyup function
+        // join the arrays to display in the document
+        var rightString = rightArray.join(" ");
+        var wrongString = wrongArray.join(" ");
+        console.log("R - " + rightString);
+        console.log("W - " + wrongString);
 
-        }); // end of document.ready function
+        // document.getElementById("demo").innerHTML = hangman.join(" ");
+
+        // generate the text and pass to the HTML page
+        rightText.textContent = rightString;
+        wrongText.textContent = wrongString;
+
+    } // end of onkeyup function
 
     </script>
 
