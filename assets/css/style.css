@@ -4,6 +4,11 @@
        color: #2d3d97;
        font-weight: 600;
    }
+   .my-message {
+    font-family: "Segoe UI", san-serif;
+    font-size: 18px;
+    color: #463a4d;
+    }
    #game-header {
        font-family: "Segoe UI", san-serif;
        text-align: center;
