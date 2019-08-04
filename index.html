@@ -141,6 +141,9 @@ $(document).ready(function() {
     var userDisplay = "";
     var displayArray = [];
     var wordArray = [];
+    var wonFlag = false;
+    var lostFlag = false;
+
 
     // make function to build the array - associate with category pulldown selection
     function makeSecretWord (catArray,index) {
@@ -157,13 +160,18 @@ $(document).ready(function() {
         return displayString;
     }
 
-    // function to clear the window text
+    // function to clear the window text and initialize vars that provide onscreen input
     function initDisplay() {
         $("#right-text").text("");
         $("#wrong-text").text("");
         $("#messages").text("");
         $("#current-category").empty();
         $("#hanging-man").attr("src","assets/images/man_gray.png");
+        wonFlag = false;
+        lostFlag = false;
+        displayArray = [];
+        wrongArray = [];
+        secretWord = "";
         }
     
     // function to play audio sound for winning or losing a game
@@ -195,10 +203,11 @@ $(document).ready(function() {
         // make secret word and add it to a new attribute at #user-select
         secretWord = makeSecretWord (categoryArray,catIndex);
         $("#user-select").attr("secret-word",secretWord);
-        secretWord = $("#user-select").attr("secret-word"); // redundant, but used for testing
+        // secretWord = $("#user-select").attr("secret-word"); // redundant, but used for testing
 
     // BUILD SECRET STRING FOR DISPLAY ONSCREEN (with underscores)
 
+        // initialize arrays used for storing and displaying secret word characters
         displayArray = [];
         wordArray = [];
 
@@ -213,6 +222,7 @@ $(document).ready(function() {
 
         // get secretWord from HTML attribute
         secretWord = $("#user-select").attr("secret-word");
+        console.log(secretWord);
         makeSecretArray(wordArray,displayArray,secretWord);
 
     });  // end of click on categories event
@@ -224,113 +234,119 @@ $(document).ready(function() {
     var guess = "";
     var wrongArray = []; //built as user presses wrong keys
     var notit = 0;
-    var wonFlag = false;
-    var lostFlag = false;
+    var img = "assets/images/";
+    var filepath = "";
 
     document.onkeyup = function(event) {
-        // assign the key pressed and initialize variables
-        var guess = event.key;
-        var img = "assets/images/";
-        var filepath = "";
-        var gotit = 0;
 
-        // create the secret word string for the window
-        for ( i = 0 ; i < secretWord.length ; i++ ) {
-            if (secretWord.charAt(i) === guess ) {
-                displayArray[i] = guess; 
-                gotit++;
+        // don't allow input if there is no secretWord, i.e., was initialed
+        if (secretWord.length < 1) {
+            alert("Please select a category for a new word.")
+        } else 
+        // else continue...        
+        {
+
+            // assign the key pressed and initialize variables
+            var guess = event.key;
+            var gotit = 0;
+
+            // create the secret word string for the window
+            for ( i = 0 ; i < secretWord.length ; i++ ) {
+                if (secretWord.charAt(i) === guess ) {
+                    displayArray[i] = guess; 
+                    gotit++;
+                } // end if
+            } // end for
+
+            // if the character is not in the secret word and not in the wrongArray...
+            // add it to wrong guesses array for display in the window
+            if ( gotit < 1 && wrongArray.indexOf(guess) == -1 ) {
+                wrongArray.push(guess);
+                notit++;
+
+                // a switch statement below to update the image and insert comments
+                switch(notit) {
+                    case 1:
+                        filepath = img + hangingManArray[1];
+                        $("#hanging-man").attr("src",filepath);
+                        $("#messages").text(messagesArray[1]);
+                    break;
+                    case 2:
+                        filepath = img + hangingManArray[2];
+                        $("#hanging-man").attr("src",img + hangingManArray[2]);
+                        $("#messages").text(messagesArray[2]);
+                    break;
+                    case 3:
+                        filepath = img + hangingManArray[3];
+                        $("#hanging-man").attr("src",img + hangingManArray[3]);
+                        $("#messages").text(messagesArray[3]);
+                    break;
+                    case 4:
+                        filepath = img + hangingManArray[4];
+                        $("#hanging-man").attr("src",img + hangingManArray[4]);
+                        $("#messages").text(messagesArray[4]);
+                    break;
+                    case 5:
+                        filepath = img + hangingManArray[5];
+                        $("#hanging-man").attr("src",img + hangingManArray[5]);
+                        $("#messages").text(messagesArray[5]);
+                    break;
+                    case 6:
+                        filepath = img + hangingManArray[6];
+                        $("#hanging-man").attr("src",img + hangingManArray[6]);
+                        $("#messages").text(messagesArray[6]);
+                    break;
+                    case 7:
+                        filepath = img + hangingManArray[7];
+                        $("#hanging-man").attr("src",img + hangingManArray[7]);
+                        $("#messages").text(messagesArray[7]);
+                        losses++;
+                        $("#losses").text(losses);
+                        lostFlag = true;
+                    break;
+                    default: 
+                        filepath = img + hangingManArray[7];
+                        $("#hanging-man").attr("src",img + hangingManArray[0]);
+                        $("#messages").text(messagesArray[7]);
+                } // end switch
+            } // end notit if
+
+            // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG                    
+            // set vars for document.GetElementById
+            var rightText = document.getElementById("right-text");
+            var wrongText = document.getElementById("wrong-text");
+
+            // join the arrays to display in the document
+            var rightString = displayArray.join(" ");
+            var wrongString = wrongArray.join(" ");
+
+            // generate the text and pass to the HTML page
+            rightText.textContent = rightString;
+            wrongText.textContent = wrongString;
+
+            //check if the onscreen word matches the correct one and user wins
+            var secretDisplay = makeSecretString(secretWord);
+            var userDisplay = $("#right-text").text();
+
+            if ( userDisplay === secretDisplay ) {
+                wins++;
+                wonFlag = true;
+                $("#wins").text(wins);
+                alert("Hey, you won!");
+                playWonAudio();
             } // end if
-        } // end for
 
-        // if the character is not in the secret word and not in the wrongArray...
-        // add it to wrong guesses array for display in the window
-        if ( gotit < 1 && wrongArray.indexOf(guess) == -1 ) {
-            wrongArray.push(guess);
-            notit++;
+            // post alert/sound if game was lost
+            if (lostFlag === true) {
+                alert("Yup, you're a goner!");
+                playLostAudio();
+            }
 
-            // a switch statement below to update the image and insert comments
-            switch(notit) {
-                case 1:
-                    filepath = img + hangingManArray[1];
-                    $("#hanging-man").attr("src",filepath);
-                    $("#messages").text(messagesArray[1]);
-                break;
-                case 2:
-                    filepath = img + hangingManArray[2];
-                    $("#hanging-man").attr("src",img + hangingManArray[2]);
-                    $("#messages").text(messagesArray[2]);
-                break;
-                case 3:
-                    filepath = img + hangingManArray[3];
-                    $("#hanging-man").attr("src",img + hangingManArray[3]);
-                    $("#messages").text(messagesArray[3]);
-                break;
-                case 4:
-                    filepath = img + hangingManArray[4];
-                    $("#hanging-man").attr("src",img + hangingManArray[4]);
-                    $("#messages").text(messagesArray[4]);
-                break;
-                case 5:
-                    filepath = img + hangingManArray[5];
-                    $("#hanging-man").attr("src",img + hangingManArray[5]);
-                    $("#messages").text(messagesArray[5]);
-                break;
-                case 6:
-                    filepath = img + hangingManArray[6];
-                    $("#hanging-man").attr("src",img + hangingManArray[6]);
-                    $("#messages").text(messagesArray[6]);
-                break;
-                case 7:
-                    filepath = img + hangingManArray[7];
-                    $("#hanging-man").attr("src",img + hangingManArray[7]);
-                    $("#messages").text(messagesArray[7]);
-                    losses++;
-                    $("#losses").text(losses);
-                    lostFlag = true;
-                break;
-                default: 
-                    filepath = img + hangingManArray[7];
-                    $("#hanging-man").attr("src",img + hangingManArray[0]);
-                    $("#messages").text(messagesArray[7]);
-            } // end switch
-        } // end notit if
-
-        // DISPLAY CHARACTER ON PAGE - EITHER RIGHT OR WRONG                    
-        // set vars for document.GetElementById
-        var rightText = document.getElementById("right-text");
-        var wrongText = document.getElementById("wrong-text");
-
-        // join the arrays to display in the document
-        var rightString = displayArray.join(" ");
-        var wrongString = wrongArray.join(" ");
-
-        // generate the text and pass to the HTML page
-        rightText.textContent = rightString;
-        wrongText.textContent = wrongString;
-
-        //check if the onscreen word matches the correct one and user wins
-        var secretDisplay = makeSecretString(secretWord);
-        var userDisplay = $("#right-text").text();
-
-        if ( userDisplay === secretDisplay ) {
-            wins++;
-            wonFlag = true;
-            $("#wins").text(wins);
-            alert("Hey, you won!");
-            playWonAudio();
-        } // end if
-
-        // post alert/sound if game was lost
-        if (lostFlag === true) {
-            alert("Yup, you're a goner!");
-            playLostAudio();
-        }
-
-        // initialize displayed text when a game is won or lost
-        if (wonFlag === true || lostFlag === true) {
-            initDisplay();
-        } // end if
-
+            // initialize displayed text when a game is won or lost
+            if (wonFlag === true || lostFlag === true) {
+                initDisplay();
+            } // end if
+        } // end if secretWord
     } // end of onkeyup function
 }); // end of document.ready
 
