@@ -117,15 +117,13 @@ $(document).ready(function() {
     var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
     var textArray = { "Sports":"0","Presidents":"1","Jazz Greats":"2","Nature's Fury":"3" };
     var hangingManArray = ["man_gray.png","man_brace.png","man_head.png","man_body.png","man_one_arm.png","man_both_arms.png","man_one_leg.png","man_hung.png"]
-    var messagesArray = ["You got this!","What's that thing for?","Gulp!","You got the answer yet?","Oh jeez!","Don't screw this up now!","Mommy!","You're a goner!"]
+    var messagesArray = ["You got this!","What's that thing for?","Gulp!","You got the answer yet?","Oh jeez!","Mommy!","Any last wishes?","You're a goner!"]
 
-    // Persistent variables that only initialize on reload
+    // Variables keeping score
     var wins = 0;
     var losses = 0;
 
-    // FUNCTIONS
-
-    // initialize variables, clear text onscreen, and reset hangman image
+    // other global variables to initialize
     var secretIndex = 0;
     var secretWord = "";
     var catText = "";
@@ -143,7 +141,9 @@ $(document).ready(function() {
     var wordArray = [];
     var wonFlag = false;
     var lostFlag = false;
+    var notit = 0;
 
+// FUNCTIONS
 
     // make function to build the array - associate with category pulldown selection
     function makeSecretWord (catArray,index) {
@@ -160,7 +160,7 @@ $(document).ready(function() {
         return displayString;
     }
 
-    // function to clear the window text and initialize vars that provide onscreen input
+    // function to clear the window text and initialize specific vars to clear screen and continue
     function initDisplay() {
         $("#right-text").text("");
         $("#wrong-text").text("");
@@ -172,6 +172,7 @@ $(document).ready(function() {
         displayArray = [];
         wrongArray = [];
         secretWord = "";
+        notit = 0;
         }
     
     // function to play audio sound for winning or losing a game
@@ -222,7 +223,7 @@ $(document).ready(function() {
 
         // get secretWord from HTML attribute
         secretWord = $("#user-select").attr("secret-word");
-        console.log(secretWord);
+        console.log(secretWord); // if you have to know
         makeSecretArray(wordArray,displayArray,secretWord);
 
     });  // end of click on categories event
@@ -231,24 +232,23 @@ $(document).ready(function() {
 // ================ ONKEYUP EVENT CAPTURING USER CHARACTERS TYPED
 
     // initialize variables
+    // notit = 0;
     var guess = "";
     var wrongArray = []; //built as user presses wrong keys
-    var notit = 0;
     var img = "assets/images/";
     var filepath = "";
 
     document.onkeyup = function(event) {
 
-        // don't allow input if there is no secretWord, i.e., was initialed
+        // don't allow input if there is no secretWord, i.e., was initialized after a game
         if (secretWord.length < 1) {
             alert("Please select a category for a new word.")
         } else 
-        // else continue...        
+        // else allow user key entry        
         {
-
             // assign the key pressed and initialize variables
-            var guess = event.key;
-            var gotit = 0;
+            guess = event.key;
+            gotit = 0;
 
             // create the secret word string for the window
             for ( i = 0 ; i < secretWord.length ; i++ ) {
@@ -262,8 +262,7 @@ $(document).ready(function() {
             // add it to wrong guesses array for display in the window
             if ( gotit < 1 && wrongArray.indexOf(guess) == -1 ) {
                 wrongArray.push(guess);
-                notit++;
-
+                ++notit;
                 // a switch statement below to update the image and insert comments
                 switch(notit) {
                     case 1:
@@ -301,6 +300,7 @@ $(document).ready(function() {
                         $("#hanging-man").attr("src",img + hangingManArray[7]);
                         $("#messages").text(messagesArray[7]);
                         losses++;
+                        notit = 0;
                         $("#losses").text(losses);
                         lostFlag = true;
                     break;
@@ -308,6 +308,7 @@ $(document).ready(function() {
                         filepath = img + hangingManArray[7];
                         $("#hanging-man").attr("src",img + hangingManArray[0]);
                         $("#messages").text(messagesArray[7]);
+                        notit = 0;
                 } // end switch
             } // end notit if
 
