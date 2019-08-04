@@ -98,7 +98,7 @@
         <source src="assets/images/Kids Cheering-SoundBible.com-681813822.mp3" type="audio/mpeg">
     </audio>
     <audio id="lost-audio">
-        <source src="assets/images/Evil_Laugh_2-Sound_Explorer-1081271267.mp3" type="audio/mpeg">
+        <source src="assets/images/Hl2_Rebel-Ragdoll485-573931361.mp3" type="audio/mpeg">
     </audio>
 </div>
 
@@ -327,25 +327,20 @@ $(document).ready(function() {
             //check if the onscreen word matches the correct one and user wins
             var secretDisplay = makeSecretString(secretWord);
             var userDisplay = $("#right-text").text();
-
+            // play audio if user wins
             if ( userDisplay === secretDisplay ) {
                 wins++;
                 wonFlag = true;
                 $("#wins").text(wins);
-                alert("Hey, you won!");
                 playWonAudio();
-            } // end if
-
-            // post alert/sound if game was lost
-            if (lostFlag === true) {
-                alert("Yup, you're a goner!");
-                playLostAudio();
-            }
-
-            // initialize displayed text when a game is won or lost
-            if (wonFlag === true || lostFlag === true) {
                 initDisplay();
             } // end if
+
+            // play audio file if game was lost
+            if (lostFlag === true) {
+                playLostAudio();
+                initDisplay();
+            }
         } // end if secretWord
     } // end of onkeyup function
 }); // end of document.ready
