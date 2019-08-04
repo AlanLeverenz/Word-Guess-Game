@@ -1,110 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Word Guess Game</title>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="text/javascript" href="assets/javascript/game.js">
-
-</head>
-<body>
-
-<!-- Header -->
-<div class="container" id="western-image">
-    <h1 id="game-header">Word Guess Game</h1>
-
-    <!-- Instructions -->
-    <p class="my-comments">Choose a category and guess the secret word(s).</p>
-
-    <!-- First row has Choose a Category button and empty div for comments to the user -->
-    <div class="container" style="padding-top:20px">
-        <div class="row justify-content-sm-center">
-
-            <!-- Choose a category button -->
-            <div class="col-sm-8">
-                <div class="container button-container">
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Choose a Category
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cat-list">
-                            <a class="dropdown-item" href="#" id="0" value="Sports">Sports</button>
-                            <a class="dropdown-item" href="#" id="1" value="Presidents">Presidents</button>
-                            <a class="dropdown-item" href="#" id="2" value="Jazz Greats">Jazz Greats</button>
-                            <a class="dropdown-item" href="#" id="3" value="Nature's Fury">Nature's Fury</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-sm">
-
-            <!-- hidden div to display user category selection -->
-            <div class="col-sm-5">
-                <div id="current-category"></div>
-            </div>
-                
-            <!-- the score cards (buttons) -->
-            <div class="col-sm-4" style="text-align:right;">
-                <button type="button" class="btn btn-info">
-                    <img src="assets/images/thumb-up.png" width="32px"> <span id="wins" class="badge badge-light">0</span>
-                </button>
-
-                <button type="button" class="btn btn-info">
-                    <img src="assets/images/thumb-down.png" width="32px"> <span id="losses" class="badge badge-light">0</span>
-                </button>
-            </div>
-
-            <!-- Empty div for displaying messages to the user -->
-            <div class="col-sm-3">
-                <h4 class="my-message" id="messages" style="text-align:center;"></h4>
-            </div>
-        </div>
-    </div>
-
-    <!-- secret word and wrong guess boxes (col 9) -->
-    <div class="container" style="padding-top:20px">
-        <div class="row justify-content-sm-center">
-            <div class="col-md-9">
-                
-                <div class="secret-word-box">
-                    <h4>Your secret word</h4>
-                    <h3 id="right-text"></h3>
-                </div>
-
-                <div class="wrong-chars-box">
-                    <h4>Your wrong guesses</h4>
-                    <h3 id="wrong-text"></h3>
-                </div>
-            </div>
-
-            <!-- Hanging man image on the right side (col-3) -->
-            <div class="col-sm-3">
-                <div>
-                    <img src="assets/images/man_gray.png" style="height:auto;width:100%;" id="hanging-man">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- AUDIO TAG -->
-    <audio id="won-audio">
-        <source src="assets/images/Kids Cheering-SoundBible.com-681813822.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="lost-audio">
-        <source src="assets/images/Evil_Laugh_2-Sound_Explorer-1081271267.mp3" type="audio/mpeg">
-    </audio>
-</div>
-
-<!-- JavaScript -->
-
-<script type="text/javascript">
 
 $(document).ready(function() {
 
@@ -166,16 +59,10 @@ $(document).ready(function() {
         $("#hanging-man").attr("src","assets/images/man_gray.png");
         }
     
-    // function to play audio sound for winning or losing a game
-    var iWon = document.getElementById("won-audio");
-    var iLost = document.getElementById("lost-audio");
-    function playWonAudio() {
-        iWon.play();
-    }
-    function playLostAudio() {
-        iLost.play();
-    }
+    // function to initialize vars
+    function initVars() {
 
+    }
 
 // ================ CATEGORY BUTTON DROPDOWN SELECT EVENT
 
@@ -192,10 +79,14 @@ $(document).ready(function() {
         $("#current-category").html("<h4 id='user-select'>" + catText + "</h4>");
         $("#user-select").attr("cat-index",catIndex);
 
+        console.log("catText: " + catText);
+        console.log("catIndex: " + catIndex);
+
         // make secret word and add it to a new attribute at #user-select
         secretWord = makeSecretWord (categoryArray,catIndex);
         $("#user-select").attr("secret-word",secretWord);
-        secretWord = $("#user-select").attr("secret-word"); // redundant, but used for testing
+        secretWord = $("#user-select").attr("secret-word");
+        console.log("Secret word = " + secretWord);
 
     // BUILD SECRET STRING FOR DISPLAY ONSCREEN (with underscores)
 
@@ -213,7 +104,10 @@ $(document).ready(function() {
 
         // get secretWord from HTML attribute
         secretWord = $("#user-select").attr("secret-word");
+
         makeSecretArray(wordArray,displayArray,secretWord);
+        console.log("displayArray = " + displayArray);
+        console.log("wordArray = " + wordArray);
 
     });  // end of click on categories event
 
@@ -244,16 +138,17 @@ $(document).ready(function() {
 
         // if the character is not in the secret word and not in the wrongArray...
         // add it to wrong guesses array for display in the window
+        // run a switch statement to replace image and insert comments
         if ( gotit < 1 && wrongArray.indexOf(guess) == -1 ) {
             wrongArray.push(guess);
             notit++;
-
-            // a switch statement below to update the image and insert comments
+            console.log("notit = " + notit);
             switch(notit) {
                 case 1:
                     filepath = img + hangingManArray[1];
                     $("#hanging-man").attr("src",filepath);
                     $("#messages").text(messagesArray[1]);
+                    console.log("src filepath = " + filepath);
                 break;
                 case 2:
                     filepath = img + hangingManArray[2];
@@ -311,34 +206,28 @@ $(document).ready(function() {
         //check if the onscreen word matches the correct one and user wins
         var secretDisplay = makeSecretString(secretWord);
         var userDisplay = $("#right-text").text();
-
         if ( userDisplay === secretDisplay ) {
             wins++;
             wonFlag = true;
             $("#wins").text(wins);
             alert("Hey, you won!");
-            playWonAudio();
         } // end if
 
-        // post alert/sound if game was lost
+        // post alert if game was lost
         if (lostFlag === true) {
             alert("Yup, you're a goner!");
-            playLostAudio();
         }
-
         // initialize displayed text when a game is won or lost
         if (wonFlag === true || lostFlag === true) {
             initDisplay();
         } // end if
 
     } // end of onkeyup function
+
+    // function to play audio sound for winning a game
+    // function play() {
+    //    var audio = document.getElementById("audio");
+    //    audio.play();
+    // }
+
 }); // end of document.ready
-
-</script>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-</body>
-</html>
