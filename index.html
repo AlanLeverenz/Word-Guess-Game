@@ -108,59 +108,78 @@
 
 $(document).ready(function() {
 
+    // VARIABLES ==========================
+
     // STATIC ARRAYS
     var sportsArray = ["curling","futsal","lawn_bowling","hang_gliding","ice_hockey","rock_climbing","cricket","wind surfing","cross country","lacrosse"];
     var presidentsArray = ["barack_obama","abraham_lincoln","theodore_roosevelt","john_kennedy","george_washington","thomas_jefferson","harry_truman","james_monroe","andrew_jackson"];
     var jazzGreatsArray = ["duke_ellington","john_coltrane","charlie_parker","thelonius_monk","dave_brubeck","bill_evans","oscar_peterson","louis_armstrong","art_tatum"];
     var naturesFuryArray = ["hurricane","earthquake","typhoon","volcano","flash_flood","monsoon","blizzard","tornado","forest_fire"];
-    var chooseCategoryArray = ["choose a category"];
     var categoryArray = [sportsArray,presidentsArray,jazzGreatsArray,naturesFuryArray];
     var textArray = { "Sports":"0","Presidents":"1","Jazz Greats":"2","Nature's Fury":"3" };
     var hangingManArray = ["man_gray.png","man_brace.png","man_head.png","man_body.png","man_one_arm.png","man_both_arms.png","man_one_leg.png","man_hung.png"]
     var messagesArray = ["You got this!","What's that thing for?","Gulp!","You got the answer yet?","Oh jeez!","Mommy!","Any last wishes?","You're a goner!"]
 
-    // Variables keeping score
+    // Variables keeping score when a game is won or lost
     var wins = 0;
     var losses = 0;
+    var wonFlag = false;
+    var lostFlag = false;
 
-    // other global variables to initialize
-    var secretIndex = 0;
+    // vars and arrays for when category is selected
     var secretWord = "";
     var catText = "";
     var catIndex = 0;
     var displayString = "";
     var displayArray = [];
     var wordArray = [];
+
+    var guess = ""; // key user pressed
+    var wrongArray = []; //built as user presses wrong keys
+    var notit = 0; // keeps track of wrong guesses until game is won or lost
+
+    // var for displaying category secret word underscores
     var rightText = "";
-    var wrongText = "";
-    var rightString = "";
-    var wrongString = "";
-    var secretDisplay = "";
-    var userDisplay = "";
-    var displayArray = [];
-    var wordArray = [];
-    var wonFlag = false;
-    var lostFlag = false;
-    var notit = 0;
 
-// FUNCTIONS
+    // folder path for scaffolding images
+    var img = "assets/images/";
+    var filepath = "";
 
-    // make function to build the array - associate with category pulldown selection
+
+// FUNCTIONS ========================
+
+    // function to generate the random index number for the categoryArray item selected by the user
     function makeSecretWord (catArray,index) {
-        secretIndex = catArray[index][Math.floor(Math.random() * catArray.length)];
-        return secretIndex;
+        randomIndex = catArray[index][Math.floor(Math.random() * catArray[index].length)];
+        return randomIndex;
     }
 
-    // function to build display string from secret word to compare to word on display (with underscores)
-    function makeSecretString (word) {
-        displayString = word.charAt(0);
-        for ( i = 1 ; i < word.length ; i++ ) {
-            displayString = displayString + " " + word.charAt(i);
+    // function to build the secret array to display the characters on the webpage
+    function makeSecretArray (secretArray,pageArray,myWord) {
+    for ( i = 0 ; i < myWord.length ; i++ ) {
+        secretArray.push(myWord.charAt(i));
+        pageArray.push("_");
         }
-        return displayString;
+        return pageArray;
+    } // end makeSecretArray
+
+    // function to write the secretWord underscores to the Guess box               
+    function displaySecretUnderscores (secretArray) {
+        var rightText = document.getElementById("right-text");
+        var rightString = secretArray.join(" ");
+        rightText.textContent = rightString;
     }
 
-    // function to clear the window text and initialize specific vars to clear screen and continue
+    // function to build and compare user's guessed word to the secret word to determine if game is won
+    function makeSecretString (word) {
+        pageString = word.charAt(0);
+        for ( i = 1 ; i < word.length ; i++ ) {
+            pageString = pageString + " " + word.charAt(i);
+        }
+        return pageString;
+    }
+
+    // function to clear text inserted on the webpage and initialize specific vars to clear screen and continue
     function initDisplay() {
         $("#right-text").text("");
         $("#wrong-text").text("");
@@ -186,7 +205,7 @@ $(document).ready(function() {
     }
 
 
-// ================ CATEGORY BUTTON DROPDOWN SELECT EVENT
+// ================ CATEGORY BUTTON DROPDOWN CLICK EVENT
 
     // select category
     $(".dropdown-menu a").click(function() {
@@ -208,37 +227,23 @@ $(document).ready(function() {
 
     // BUILD SECRET STRING FOR DISPLAY ONSCREEN (with underscores)
 
-        // initialize arrays used for storing and displaying secret word characters
-        displayArray = [];
-        wordArray = [];
-
-        // function to build the wordArray and rightArray to display the characters on the page
-        function makeSecretArray (thisArray,pageArray,myWord) {
-        for ( i = 0 ; i < myWord.length ; i++ ) {
-            thisArray.push(myWord.charAt(i));
-            pageArray.push("_");
-            }
-            return pageArray;
-        } // end makeSecretArray
-
         // get secretWord from HTML attribute
         secretWord = $("#user-select").attr("secret-word");
         console.log(secretWord); // if you have to know
-        makeSecretArray(wordArray,displayArray,secretWord);
+        displayArray = makeSecretArray(wordArray,displayArray,secretWord);
+
+        // display initial word onscreen
+        displaySecretUnderscores(displayArray);
 
     });  // end of click on categories event
 
 
 // ================ ONKEYUP EVENT CAPTURING USER CHARACTERS TYPED
 
-    // initialize variables
-    // notit = 0;
-    var guess = "";
-    var wrongArray = []; //built as user presses wrong keys
-    var img = "assets/images/";
-    var filepath = "";
 
     document.onkeyup = function(event) {
+
+    // initialize variables
 
         // don't allow input if there is no secretWord, i.e., was initialized after a game
         if (secretWord.length < 1) {
